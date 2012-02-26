@@ -8,7 +8,8 @@ A configurable star rating control for OSX, similar to those found in iTunes and
  In order to use EDStarRating, you can instantiate it programatically, or create a custom view in Interface Builder and assign it to an ivar of your app. Once you have an instance, you can use the control properties to configurate it.
 
 Example:
-```objectivec
+
+```
 
   starRating.starImage = [NSImage imageNamed:@"star.png"];
   starRating.starHighlightedImage = [NSImage imageNamed:@"starhighlighted.png"];
