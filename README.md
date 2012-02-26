@@ -5,7 +5,7 @@ A configurable star rating control for OSX, similar to those found in iTunes and
 
 ### Usage
 
- In order to use EDStarRating, you can instantiate it programatically, or create a custom view in Interface Builder and assign it to an ivar of your app. Once you have an instance, you can use the control properties to configurate it.
+ In order to use EDStarRating, you can instantiate it programmatically, or create a custom view in Interface Builder and assign it to an ivar of your app. Once you have an instance, you can use the control properties to configure it.
 
 Example:
 
