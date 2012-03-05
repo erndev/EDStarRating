@@ -63,6 +63,14 @@
 //  ARC Helper ends
 
 #import <Cocoa/Cocoa.h>
+
+enum {
+    EDStarRatingDisplayFull=0,
+    EDStarRatingDisplayHalf,
+    EDStarRatingDisplayAccurate
+};
+typedef NSUInteger EDStarRatingDisplayMode;
+
 @protocol EDStarRatingProtocol;
 
 @interface EDStarRating : NSControl
@@ -75,7 +83,7 @@
 @property (nonatomic) float rating;
 @property (nonatomic) CGFloat horizontalMargin;
 @property (nonatomic) BOOL editable;
-@property (nonatomic) BOOL drawHalfStars;
+@property (nonatomic) EDStarRatingDisplayMode displayMode;
 @property (nonatomic) float halfStarThreshold;
 
 @property (nonatomic,unsafe_unretained) id<EDStarRatingProtocol> delegate;

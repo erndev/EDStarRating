@@ -15,6 +15,6 @@
 @property (assign) IBOutlet EDStarRating *starRating;
 
 -(IBAction)editableChanged:(id)sender;
--(IBAction)halfStarChanged:(id)sender;
+-(IBAction)displayModeChanged:(id)sender;
 
 @end

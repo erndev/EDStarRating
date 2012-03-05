@@ -19,8 +19,9 @@
 @synthesize editable;
 @synthesize delegate;
 @synthesize horizontalMargin;
-@synthesize drawHalfStars;
+//@synthesize drawHalfStars;
 @synthesize halfStarThreshold;
+@synthesize displayMode;
 
 #pragma mark -
 #pragma mark Init & dealloc
@@ -32,7 +33,7 @@
         maxRating=5.0;
         _rating=0.0;
         horizontalMargin=10.0;
-        drawHalfStars = YES;
+        displayMode = EDStarRatingDisplayFull;
         halfStarThreshold=ED_DEFAULT_HALFSTAR_THRESHOLD;
     }
     
@@ -54,6 +55,12 @@
 -(void)setRating:(float)ratingParam
 {
     _rating = ratingParam;
+    [self setNeedsDisplay];
+}
+
+-(void)setDisplayMode:(EDStarRatingDisplayMode)dispMode
+{
+    displayMode = dispMode;
     [self setNeedsDisplay];
 }
 
@@ -106,16 +113,23 @@
             {
                 
                 float difference = _rating - i;
-                if( drawHalfStars && difference < halfStarThreshold )    // Draw half star image
+                NSRect rectClip;
+                rectClip.origin = starPoint;
+                rectClip.size = starSize;
+                if( displayMode == EDStarRatingDisplayHalf && difference < halfStarThreshold )    // Draw half star image
                 {
-                    NSRect rectClip;
-                    rectClip.origin = starPoint;
-                    rectClip.size = starSize;
+
                     rectClip.size.width/=2.0;
                     pathClip = [NSBezierPath bezierPathWithRect:rectClip];
-                    [pathClip addClip];
                 }
-                
+                else if( displayMode == EDStarRatingDisplayAccurate )
+                {
+                    rectClip.size.width*=difference;
+                    pathClip = [NSBezierPath bezierPathWithRect:rectClip];                    
+                }
+                if( pathClip)
+                    [pathClip addClip];
+
             }
             [starHighlightedImage drawAtPoint:starPoint fromRect:NSMakeRect(0.0, 0.0, starHighlightedSize.width, starHighlightedSize.height) operation:NSCompositeSourceOver fraction:1.0];
         

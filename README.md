@@ -23,6 +23,8 @@ Example:
   starRating.rating= 2.5;
 
 ```
+### Compatiblity
+This control should work in ARC and not ARC project, and OS X 10.6+. But i've only tested it with ARC and Lion 10.7. Let me now if it works fine for you in other environments.
   
 
 ### Screenshot

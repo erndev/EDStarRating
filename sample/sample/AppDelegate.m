@@ -16,7 +16,6 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
     
     // Insert code here to initialize your application
     _starRatingImage.backgroundImage=[NSImage imageNamed:@"starsbackground.png"];
@@ -27,12 +26,12 @@
     _starRatingImage.delegate = self;
     _starRatingImage.horizontalMargin = 12;
     _starRatingImage.editable=YES;
-    _starRatingImage.rating= 1.4;
-    _starRatingImage.drawHalfStars=YES;
+    _starRatingImage.rating= 2.5;
+    _starRatingImage.displayMode=EDStarRatingDisplayFull;
     [_starRatingImage setTarget:self];
     [_starRatingImage  setNeedsDisplay];
     
-    // Insert code here to initialize your application
+    
     _starRating.backgrounColor  = [NSColor clearColor];
     _starRating.starImage = [NSImage imageNamed:@"star.png"];
     _starRating.starHighlightedImage = [NSImage imageNamed:@"starhighlighted.png"];
@@ -40,17 +39,16 @@
     _starRating.delegate = self;
     _starRating.horizontalMargin = 12;
     _starRating.editable=YES;
-    _starRating.rating= 1.4;
-    _starRating.drawHalfStars=YES;
+    _starRating.rating= 2.5;
+    _starRating.displayMode=EDStarRatingDisplayFull;
     [_starRating setTarget:self];
     [_starRating  setNeedsDisplay];
 
     
-    // Set the control size equals to the background image size
+    // Set the control size equal to the background image size
     NSRect frame =_starRatingImage.frame;
     frame.size = _starRatingImage.backgroundImage.size;
     [_starRatingImage setFrame:frame];
-
 }
 
 -(IBAction)editableChanged:(id)sender
@@ -60,11 +58,12 @@
     _starRating.editable=[sender state];
     [_starRating setNeedsDisplay];
 }
--(IBAction)halfStarChanged:(id)sender
+-(IBAction)displayModeChanged:(id)sender
 {
-    _starRatingImage.drawHalfStars=[sender state];
+    NSInteger selectedMode = [sender selectedRow];
+    _starRatingImage.displayMode= selectedMode;
     [_starRatingImage setNeedsDisplay];
-    _starRating.drawHalfStars=[sender state];
+    _starRating.displayMode=selectedMode;
     [_starRating setNeedsDisplay];
 }
 -(IBAction)ratingChanged:(id)sender
