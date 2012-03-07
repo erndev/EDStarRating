@@ -166,7 +166,7 @@
         self.rating = [self starsForPoint:pointInView];
         [self setNeedsDisplay];
     }
-    [super mouseDown:theEvent];
+
 }
 
 -(void)mouseDragged:(NSEvent *)theEvent
@@ -177,7 +177,6 @@
     NSPoint pointInView   = [self convertPoint:[theEvent locationInWindow] fromView:nil];
     self.rating = [self starsForPoint:pointInView];
     [self setNeedsDisplay];
-    [super mouseDragged:theEvent];
 }
 
 -(void)mouseUp:(NSEvent *)theEvent
@@ -187,8 +186,6 @@
     
     if( delegate && [delegate respondsToSelector:@selector(starsSelectionChanged:rating:)] )
         [delegate starsSelectionChanged:self rating:self.rating];
- 
-    [super mouseUp:theEvent];
 }
 
 @end
