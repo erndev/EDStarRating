@@ -17,7 +17,7 @@ Example:
   starRating.delegate = self;
   starRating.horizontalMargin = 12;
   starRating.editable=YES;
-  starRating.drawHalfStars=YES;
+  displayMode=EDStarRatingDisplayFull;
 
 
   starRating.rating= 2.5;
