@@ -19,26 +19,55 @@
 @synthesize editable;
 @synthesize delegate;
 @synthesize horizontalMargin;
-//@synthesize drawHalfStars;
 @synthesize halfStarThreshold;
 @synthesize displayMode;
 
 #pragma mark -
 #pragma mark Init & dealloc
+
+
+-(void)setDefaultProperties
+{
+    maxRating=5.0;
+    _rating=0.0;
+    horizontalMargin=10.0;
+    displayMode = EDStarRatingDisplayFull;
+    halfStarThreshold=ED_DEFAULT_HALFSTAR_THRESHOLD;
+    
+}
+#if  EDSTAR_MACOSX
+
 - (id)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code here.
-        maxRating=5.0;
-        _rating=0.0;
-        horizontalMargin=10.0;
-        displayMode = EDStarRatingDisplayFull;
-        halfStarThreshold=ED_DEFAULT_HALFSTAR_THRESHOLD;
+    if (self)
+    {
+        [self setDefaultProperties];
     }
     
     return self;
 }
+#else
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if( self )
+    {
+        [self setDefaultProperties];
+    }
+    return self;
+}
+
+-(id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if( self )
+    {
+        [self setDefaultProperties];
+    }
+    return self;
+}
+#endif
 
 
 
@@ -66,9 +95,9 @@
 
 #pragma mark -
 #pragma mark Drawing
--(NSPoint)pointOfStarAtPosition:(NSInteger)position highlighted:(BOOL)hightlighted
+-(CGPoint)pointOfStarAtPosition:(NSInteger)position highlighted:(BOOL)hightlighted
 {
-    NSSize size = hightlighted?starHighlightedImage.size:starImage.size;
+    CGSize size = hightlighted?starHighlightedImage.size:starImage.size;
     
     NSInteger starsSpace = self.bounds.size.width - 2*horizontalMargin;
     
@@ -80,80 +109,140 @@
     if( position >0 )
         x+=interSpace*position;
     CGFloat y = (self.bounds.size.height - size.height)/2.0;
-    return NSMakePoint(x  ,y); 
+    return CGPointMake(x  ,y); 
 }
 
-
-
-- (void)drawRect:(NSRect)dirtyRect
+-(void)drawBackgroundImage
 {
-    // Drawing code here.
-    // Draw background color
-    NSColor *colorToDraw = backgrounColor==nil?[NSColor clearColor]:backgrounColor;
-    [colorToDraw set];
-    NSBezierPath *path = [NSBezierPath bezierPathWithRect:self.bounds];
-    [path fill];
-    // Draw image background
-    if( backgroundImage)
+    if( backgroundImage )
     {
+#if EDSTAR_MACOSX
         [backgroundImage drawInRect:self.bounds fromRect:NSMakeRect(0.0, 0.0, backgroundImage.size.width, backgroundImage.size.height) operation:NSCompositeSourceOver fraction:1.0];
+        
+#else
+        [backgroundImage drawInRect:self.bounds];
+        
+#endif
     }
-    NSSize starSize = [starImage size];
-    NSSize starHighlightedSize = [starHighlightedImage size];
+    
+}
 
+-(void)drawImage:(EDImage*)image atPosition:(NSInteger)position
+{
+#if EDSTAR_MACOSX
+    [image drawAtPoint:[self pointOfStarAtPosition:position highlighted:YES] fromRect:NSMakeRect(0.0, 0.0, image.size.width, image.size.height) operation:NSCompositeSourceOver fraction:1.0];
+
+#else
+    [image drawAtPoint:[self pointOfStarAtPosition:position highlighted:YES]];
+    
+#endif
+
+}
+
+-(CGColorRef)cgColor:(EDColor*)color
+{
+    CGColorRef cgColor = nil;
+    
+#if EDSTAR_MACOSX    
+    NSInteger numberOfComponents = [color numberOfComponents];
+    CGFloat components[numberOfComponents];
+
+    CGColorSpaceRef colorSpace = [[color colorSpace] CGColorSpace];
+    
+    [color getComponents:(CGFloat *)&components];
+    cgColor = (__bridge CGColorRef)AH_AUTORELEASE((__bridge id)CGColorCreate(colorSpace, components));
+#else
+    cgColor  = color.CGColor;
+#endif
+
+    return cgColor;
+}
+
+-(CGContextRef)currentContext
+{
+    CGContextRef ctx=nil;
+#if EDSTAR_MACOSX    
+    NSGraphicsContext    *    nsGraphicsContext    = [NSGraphicsContext currentContext];
+    ctx        = (CGContextRef) [nsGraphicsContext graphicsPort];
+#else
+    ctx = UIGraphicsGetCurrentContext();  
+#endif
+    return ctx;
+}
+
+-(void)drawRect:(CGRect)rect
+{
+    CGRect bounds = self.bounds;
+    CGContextRef ctx = [self currentContext];  
+    
+    // Fill background color
+    EDColor *colorToDraw = backgrounColor==nil?[EDColor clearColor]:backgrounColor;
+    CGContextSetFillColorWithColor(ctx, [self cgColor:colorToDraw]);
+    CGContextFillRect(ctx, bounds);  
+    
+    // Draw background Image
+    if( backgroundImage )
+    {
+        [self drawBackgroundImage];
+    }
+    
+    // Draw rating Images
+    CGSize starSize = starHighlightedImage.size;
     for( NSInteger i=0 ; i<maxRating; i++ )
     {
-        [starImage drawAtPoint:[self pointOfStarAtPosition:i highlighted:YES] fromRect:NSMakeRect(0.0, 0.0, starSize.width, starSize.height) operation:NSCompositeSourceOver fraction:1.0];
-        if( i <_rating )
+        [self drawImage:self.starImage atPosition:i];
+        if( i < _rating )   // Highlight
         {
-            [NSGraphicsContext saveGraphicsState];
-            NSBezierPath *pathClip=nil;
-            NSPoint starPoint = [self pointOfStarAtPosition:i highlighted:NO];
-            if( i< _rating &&  _rating < i+1 )
+            CGContextSaveGState(ctx);
             {
+                if( i< _rating &&  _rating < i+1 )
+                {
+                    
+                    CGPoint starPoint = [self pointOfStarAtPosition:i highlighted:NO];
+                    float difference = _rating - i;
+                    CGRect rectClip;
+                    rectClip.origin = starPoint;
+                    rectClip.size = starSize;
+                    if( displayMode == EDStarRatingDisplayHalf && difference < halfStarThreshold )    // Draw half star image
+                    {
+                        rectClip.size.width/=2.0;
+                    }
+                    else if( displayMode == EDStarRatingDisplayAccurate )
+                    {
+                        rectClip.size.width*=difference;
+                    }
+                    else {
+                        rectClip.size.width = 0;
+                    }
+                    if( rectClip.size.width >0 )
+                        CGContextClipToRect( ctx, rectClip);
+                    
+                }
                 
-                float difference = _rating - i;
-                NSRect rectClip;
-                rectClip.origin = starPoint;
-                rectClip.size = starSize;
-                if( displayMode == EDStarRatingDisplayHalf && difference < halfStarThreshold )    // Draw half star image
-                {
-
-                    rectClip.size.width/=2.0;
-                    pathClip = [NSBezierPath bezierPathWithRect:rectClip];
-                }
-                else if( displayMode == EDStarRatingDisplayAccurate )
-                {
-                    rectClip.size.width*=difference;
-                    pathClip = [NSBezierPath bezierPathWithRect:rectClip];                    
-                }
-                if( pathClip)
-                    [pathClip addClip];
-
+                [self drawImage:starHighlightedImage atPosition:i];
             }
-            [starHighlightedImage drawAtPoint:starPoint fromRect:NSMakeRect(0.0, 0.0, starHighlightedSize.width, starHighlightedSize.height) operation:NSCompositeSourceOver fraction:1.0];
-        
-            [NSGraphicsContext restoreGraphicsState];
-        }   
+            CGContextRestoreGState(ctx);
+        }
     }
 }
 
+
 #pragma mark -
-#pragma mark Mouse Interaction
--(NSInteger) starsForPoint:(NSPoint)point
+#pragma mark Mouse/Touch Interaction
+-(NSInteger) starsForPoint:(CGPoint)point
 {
     NSInteger stars=0;
     for( NSInteger i=0; i<maxRating; i++ )
     {
-        NSPoint p =[self pointOfStarAtPosition:i highlighted:NO];
+        CGPoint p =[self pointOfStarAtPosition:i highlighted:NO];
         if( point.x > p.x )
             stars=i+1;
 
     }
-    
     return stars;
 }
 
+#if EDSTAR_MACOSX
 -(void)mouseDown:(NSEvent *)theEvent
 {
     if( !editable )
@@ -168,7 +257,20 @@
     }
 
 }
+#else
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
+{
+    if( !editable )
+        return;
 
+    UITouch *touch = [touches anyObject];
+    CGPoint touchLocation = [touch locationInView:self];
+    self.rating =[self starsForPoint:touchLocation];
+    [self setNeedsDisplay];
+}
+#endif
+
+#if EDSTAR_MACOSX
 -(void)mouseDragged:(NSEvent *)theEvent
 {
     if( !editable )
@@ -178,8 +280,22 @@
     self.rating = [self starsForPoint:pointInView];
     [self setNeedsDisplay];
 }
+#else
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+   
+    UITouch *touch = [touches anyObject];
+    CGPoint touchLocation = [touch locationInView:self];
+    self.rating =[self starsForPoint:touchLocation]; 
+    [self setNeedsDisplay];
+}
 
--(void)mouseUp:(NSEvent *)theEvent
+#endif
+
+#if EDSTAR_MACOSX
+- (void)mouseUp:(NSEvent *)theEvent
+#else
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event 
+#endif
 {
     if( !editable )
         return;
@@ -187,5 +303,4 @@
     if( delegate && [delegate respondsToSelector:@selector(starsSelectionChanged:rating:)] )
         [delegate starsSelectionChanged:self rating:self.rating];
 }
-
 @end

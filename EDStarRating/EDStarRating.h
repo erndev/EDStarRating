@@ -62,7 +62,19 @@
 
 //  ARC Helper ends
 
+
+#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
+#define EDSTAR_MACOSX 1
+#define EDSTAR_IOS    0
+#else
+#define EDSTAR_MACOSX 0
+#define EDSTAR_IOS    1
+#endif
+
+#if EDSTAR_MAC
 #import <Cocoa/Cocoa.h>
+#endif
+
 
 enum {
     EDStarRatingDisplayFull=0,
@@ -73,12 +85,23 @@ typedef NSUInteger EDStarRatingDisplayMode;
 
 @protocol EDStarRatingProtocol;
 
-@interface EDStarRating : NSControl
+#if EDSTAR_MACOSX
+#define EDControl   NSControl
+typedef NSColor     EDColor;
+typedef NSImage     EDImage;
+#else
+#define EDControl   UIControl
+typedef UIColor     EDColor;
+typedef UIImage     EDImage;
 
-@property (nonatomic,strong) NSColor *backgrounColor;
-@property (nonatomic,strong) NSImage *backgroundImage;
-@property (nonatomic,strong) NSImage *starHighlightedImage;
-@property (nonatomic,strong) NSImage *starImage;
+#endif
+
+@interface EDStarRating : EDControl
+
+@property (nonatomic,strong) EDColor *backgrounColor;
+@property (nonatomic,strong) EDImage *backgroundImage;
+@property (nonatomic,strong) EDImage *starHighlightedImage;
+@property (nonatomic,strong) EDImage *starImage;
 @property (nonatomic) NSInteger maxRating;
 @property (nonatomic) float rating;
 @property (nonatomic) CGFloat horizontalMargin;
