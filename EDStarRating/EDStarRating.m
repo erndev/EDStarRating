@@ -14,13 +14,16 @@
 @synthesize starHighlightedImage;
 @synthesize rating=_rating;
 @synthesize maxRating;
-@synthesize backgrounColor;
 @synthesize backgroundImage;
 @synthesize editable;
 @synthesize delegate;
 @synthesize horizontalMargin;
 @synthesize halfStarThreshold;
 @synthesize displayMode;
+#if EDSTAR_MACOSX
+@synthesize backgroundColor;
+#endif
+
 
 #pragma mark -
 #pragma mark Init & dealloc
@@ -176,7 +179,7 @@
     CGContextRef ctx = [self currentContext];  
     
     // Fill background color
-    EDColor *colorToDraw = backgrounColor==nil?[EDColor clearColor]:backgrounColor;
+    EDColor *colorToDraw = self.backgroundColor==nil?[EDColor clearColor]:self.backgroundColor;
     CGContextSetFillColorWithColor(ctx, [self cgColor:colorToDraw]);
     CGContextFillRect(ctx, bounds);  
     

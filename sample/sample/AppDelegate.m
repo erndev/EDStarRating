@@ -19,7 +19,7 @@
     
     // Insert code here to initialize your application
     _starRatingImage.backgroundImage=[NSImage imageNamed:@"starsbackground.png"];
-    _starRatingImage.backgrounColor  = [NSColor clearColor];
+    _starRatingImage.backgroundColor  = [NSColor clearColor];
     _starRatingImage.starImage = [NSImage imageNamed:@"star.png"];
     _starRatingImage.starHighlightedImage = [NSImage imageNamed:@"starhighlighted.png"];
     _starRatingImage.maxRating = 5.0;
@@ -32,7 +32,7 @@
     [_starRatingImage  setNeedsDisplay];
     
     
-    _starRating.backgrounColor  = [NSColor clearColor];
+    _starRating.backgroundColor  = [NSColor clearColor];
     _starRating.starImage = [NSImage imageNamed:@"star.png"];
     _starRating.starHighlightedImage = [NSImage imageNamed:@"starhighlighted.png"];
     _starRating.maxRating = 5.0;

@@ -98,7 +98,9 @@ typedef UIImage     EDImage;
 
 @interface EDStarRating : EDControl
 
-@property (nonatomic,strong) EDColor *backgrounColor;
+#if EDSTAR_MACOSX
+@property (nonatomic,strong) EDColor *backgroundColor;
+#endif
 @property (nonatomic,strong) EDImage *backgroundImage;
 @property (nonatomic,strong) EDImage *starHighlightedImage;
 @property (nonatomic,strong) EDImage *starImage;
