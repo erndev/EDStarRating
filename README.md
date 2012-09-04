@@ -1,7 +1,7 @@
 EDStarRating
 ---------------
 
-A configurable star rating control for OSX, similar to those found in iTunes and the App Store.
+A configurable star rating control for OSX and iOS, similar to those found in iTunes and the App Store.
 
 ### Usage
 
@@ -24,12 +24,14 @@ Example:
 
 ```
 ### Compatiblity
-This control should work in ARC and not ARC projects, and OS X 10.6+. But i've only tested it with ARC and Lion 10.7. Let me now if it works fine for you in other environments.
+This control should work in ARC and not ARC projects. On OS X 10.6+ and iOS 4.x+.
+But i've only tested it with ARC and Lion 10.7 and iOS 5.0. Let me now if it works fine for you in other environments.
   
 
-### Screenshot
+### Screenshots
 
 ![EDStarRating](https://github.com/erndev/EDStarRating/raw/master/edstarrating.png)
+![EDStarRating](https://github.com/erndev/EDStarRating/raw/master/edstarrating-ios.png)
 
 ### License
 BSD License.
