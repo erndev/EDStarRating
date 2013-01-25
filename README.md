@@ -14,7 +14,7 @@ pod 'EDStarRating'
 
 and run `pod install`. 
 
-You can also install it manually by copying to project this two files: EDStarRating.h and EDStarRating.m
+You can also install it manually by copying to project these two files: EDStarRating.h and EDStarRating.m
 
 ### Usage
 
