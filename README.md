@@ -3,6 +3,19 @@ EDStarRating
 
 A configurable star rating control for OSX and iOS, similar to those found in iTunes and the App Store.
 
+
+###Installation
+
+The easiest way to install EDStarRating is via [CocoaPods](http://cocoapods.org). Add this line to your Podfile:
+
+```ruby
+pod 'EDStarRating'
+```
+
+and run `pod install`. 
+
+You can also install it manually by copying to project this two files: EDStarRating.h and EDStarRating.m
+
 ### Usage
 
  In order to use EDStarRating, you can instantiate it programmatically, or create a custom view in Interface Builder and assign it to an ivar of your app. Once you have an instance, you can use the control properties to configure it.
