@@ -78,9 +78,14 @@
 {
     AH_RELEASE(starImage);
     AH_RELEASE(starHighlightedImage);
-    AH_RELEASE(backGrounColor);
-    AH_RELEASE(backGroundImage);
-    
+    AH_RELEASE(backgroundImage);
+#if EDSTAR_MACOSX
+    AH_RELEASE(backgroundColor);
+#endif
+
+#if ! __has_feature(objc_arc)
+    [super dealloc];
+#endif
 }
 #pragma mark -
 #pragma mark Setters
@@ -153,7 +158,12 @@
     CGColorSpaceRef colorSpace = [[color colorSpace] CGColorSpace];
     
     [color getComponents:(CGFloat *)&components];
-    cgColor = (__bridge CGColorRef)AH_AUTORELEASE((__bridge id)CGColorCreate(colorSpace, components));
+#if __has_feature(objc_arc)
+        cgColor = (__bridge CGColorRef)AH_AUTORELEASE((__bridge id)CGColorCreate(colorSpace, components));
+#else
+    cgColor = ( CGColorRef)AH_AUTORELEASE(( id)CGColorCreate(colorSpace, components));
+#endif
+
 #else
     cgColor  = color.CGColor;
 #endif
