@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
   s.version      = "1.0"
   s.summary      = "A configurable star rating control for OSX and iOS, similar to those found in iTunes and the App Store."
   s.ios.frameworks  = 'CoreGraphics'
-  s.ios.deployment_target = '5.0'
+  s.ios.deployment_target = '4.3'
   s.osx.deployment_target = '10.6'
   s.description  = <<-DESC
                 Star
