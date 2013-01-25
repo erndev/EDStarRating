@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '4.3'
   s.osx.deployment_target = '10.6'
   s.description  = <<-DESC
-                Star
+                A configurable star rating control for OSX and iOS, similar to those found in iTunes and the App Store.
 	DESC
   s.homepage     = "https://github.com/erndev/EDStarRating"
 
