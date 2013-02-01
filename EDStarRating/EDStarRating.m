@@ -16,14 +16,14 @@
 @synthesize maxRating;
 @synthesize backgroundImage;
 @synthesize editable;
-@synthesize delegate;
+@synthesize delegate=_delegate;
 @synthesize horizontalMargin;
 @synthesize halfStarThreshold;
 @synthesize displayMode;
 #if EDSTAR_MACOSX
 @synthesize backgroundColor;
 #endif
-
+@synthesize returnBlock=_returnBlock;
 
 #pragma mark -
 #pragma mark Init & dealloc
@@ -89,6 +89,18 @@
 }
 #pragma mark -
 #pragma mark Setters
+-(void)setReturnBlock:(EDStarRatingReturnBlock)retBlock
+{
+    _returnBlock = [retBlock copy];
+    _delegate = nil;
+}
+
+-(void)setDelegate:(id<EDStarRatingProtocol>)delegate
+{
+    _delegate = delegate;
+    _returnBlock = nil;
+}
+
 -(void)setRating:(float)ratingParam
 {
     _rating = ratingParam;
@@ -313,7 +325,11 @@
     if( !editable )
         return;
     
-    if( delegate && [delegate respondsToSelector:@selector(starsSelectionChanged:rating:)] )
-        [delegate starsSelectionChanged:self rating:self.rating];
+    if( self.delegate && [self.delegate respondsToSelector:@selector(starsSelectionChanged:rating:)] )
+        [self.delegate starsSelectionChanged:self rating:self.rating];
+    
+    if( self.returnBlock)
+        self.returnBlock(self.rating);
+    
 }
 @end

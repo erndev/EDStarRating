@@ -49,6 +49,13 @@
     _starRatingImage.rating= 2.5;
     _starRatingImage.displayMode=EDStarRatingDisplayAccurate;
     [self starsSelectionChanged:_starRatingImage rating:2.5];
+    // This one will use the returnBlock instead of the delegate
+    _starRatingImage.returnBlock = ^(float rating )
+    {
+        NSLog(@"ReturnBlock: Star rating changed to %.1f", rating);
+        // For the sample, Just reuse the other control's delegate method and call it
+        [self starsSelectionChanged:_starRatingImage rating:rating];
+    };
 
 
 }
