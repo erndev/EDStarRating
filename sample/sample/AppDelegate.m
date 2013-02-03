@@ -43,7 +43,13 @@
     _starRating.displayMode=EDStarRatingDisplayFull;
     [_starRating setTarget:self];
     [_starRating  setNeedsDisplay];
-
+    // This will use a return block to handle the rating changes
+    // Setting the return block automatically nils the delegate
+    _starRating.returnBlock = ^(float rating)
+    {
+        NSLog(@"Star Rating changed to %.1f" ,rating);
+    };
+    
     
     // Set the control size equal to the background image size
     NSRect frame =_starRatingImage.frame;

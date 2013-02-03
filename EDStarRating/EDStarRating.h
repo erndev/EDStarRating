@@ -82,7 +82,7 @@ enum {
     EDStarRatingDisplayAccurate
 };
 typedef NSUInteger EDStarRatingDisplayMode;
-
+typedef void(^EDStarRatingReturnBlock)(float rating);
 @protocol EDStarRatingProtocol;
 
 #if EDSTAR_MACOSX
@@ -112,6 +112,7 @@ typedef UIImage     EDImage;
 @property (nonatomic) float halfStarThreshold;
 
 @property (nonatomic,unsafe_unretained) id<EDStarRatingProtocol> delegate;
+@property (nonatomic,copy) EDStarRatingReturnBlock returnBlock;
 @end
 
 
