@@ -306,8 +306,11 @@
     [self setNeedsDisplay];
 }
 #else
--(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-   
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if( !editable )
+        return;
+    
     UITouch *touch = [touches anyObject];
     CGPoint touchLocation = [touch locationInView:self];
     self.rating =[self starsForPoint:touchLocation]; 
