@@ -1,11 +1,19 @@
 //
-//  EDStartRatingView.
+//  EDStarRatingView.
 //
 //  Created by Ernesto Garcia on 26/02/12.
 //  Copyright (c) 2012 cocoawithchurros.com All rights reserved.
 //  Distributed under MIT license
 
 
+#import <Availability.h>
+#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
+#define EDSTAR_MACOSX 1
+#define EDSTAR_IOS    0
+#else
+#define EDSTAR_MACOSX 0
+#define EDSTAR_IOS    1
+#endif
 
 
 //
@@ -50,7 +58,7 @@
 #define AH_WEAK unsafe_unretained
 #endif
 #elif defined __MAC_OS_X_VERSION_MIN_REQUIRED
-#if __MAC_OS_X_VERSION_MIN_REQUIRED > __MAC_10_6
+#if __MAC_OS_X_VERSION_MIN_REQUIRED > __MAC_10_7
 #define __AH_WEAK __weak
 #define AH_WEAK weak
 #else
@@ -63,16 +71,10 @@
 //  ARC Helper ends
 
 
-#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-#define EDSTAR_MACOSX 1
-#define EDSTAR_IOS    0
-#else
-#define EDSTAR_MACOSX 0
-#define EDSTAR_IOS    1
-#endif
-
-#if EDSTAR_MAC
+#if EDSTAR_MACOSX
 #import <Cocoa/Cocoa.h>
+#else
+#import <UIKit/UIKit.h>
 #endif
 
 
@@ -111,7 +113,7 @@ typedef UIImage     EDImage;
 @property (nonatomic) EDStarRatingDisplayMode displayMode;
 @property (nonatomic) float halfStarThreshold;
 
-@property (nonatomic,unsafe_unretained) id<EDStarRatingProtocol> delegate;
+@property (nonatomic,AH_WEAK) id<EDStarRatingProtocol> delegate;
 @property (nonatomic,copy) EDStarRatingReturnBlock returnBlock;
 @end
 
