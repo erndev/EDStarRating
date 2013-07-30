@@ -254,15 +254,26 @@
 
 #pragma mark -
 #pragma mark Mouse/Touch Interaction
--(NSInteger) starsForPoint:(CGPoint)point
+-(float) starsForPoint:(CGPoint)point
 {
-    NSInteger stars=0;
+    float stars=0;
     for( NSInteger i=0; i<maxRating; i++ )
     {
         CGPoint p =[self pointOfStarAtPosition:i highlighted:NO];
         if( point.x > p.x )
-            stars=i+1;
-
+        {
+            float increment=1.0;
+            
+            if( self.displayMode == EDStarRatingDisplayHalf  )
+            {
+                float difference = (point.x - p.x)/self.starImage.size.width;
+                if( difference < self.halfStarThreshold )
+                {
+                    increment=0.5;
+                }
+            }
+            stars+=increment;
+        }
     }
     return stars;
 }
