@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "EDStarRating"
-  s.version      = "1.0.1"
+  s.version      = "1.1"
   s.summary      = "A configurable star rating control for OSX and iOS, similar to those found in iTunes and the App Store."
   s.ios.frameworks  = 'CoreGraphics'
   s.ios.deployment_target = '4.3'

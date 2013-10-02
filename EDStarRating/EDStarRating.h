@@ -1,9 +1,11 @@
 //
-//  EDStarRatingView.
+//  EDStarRating.
 //
 //  Created by Ernesto Garcia on 26/02/12.
-//  Copyright (c) 2012 cocoawithchurros.com All rights reserved.
+//  2013 cocoawithchurros.com
 //  Distributed under MIT license
+//
+//  Version 1.1
 
 
 #import <Availability.h>
