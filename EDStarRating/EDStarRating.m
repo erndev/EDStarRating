@@ -80,8 +80,8 @@
 
 -(void)dealloc
 {
-    AH_RELEASE(starImage);
-    AH_RELEASE(starHighlightedImage);
+    AH_RELEASE(_starImage);
+    AH_RELEASE(_starHighlightedImage);
     AH_RELEASE(backgroundImage);
 #if EDSTAR_MACOSX
     AH_RELEASE(backgroundColor);
