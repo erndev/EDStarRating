@@ -27,6 +27,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     _starRating.backgroundColor  = [UIColor colorWithWhite:0.9 alpha:1.0];
+    _starRating.starSize = 20;
     _starRating.starImage = [UIImage imageNamed:@"star.png"];
     _starRating.starHighlightedImage = [UIImage imageNamed:@"starhighlighted.png"];
     _starRating.maxRating = 5.0;

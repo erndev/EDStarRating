@@ -114,6 +114,9 @@ typedef UIImage     EDImage;
 @property (nonatomic) BOOL editable;
 @property (nonatomic) EDStarRatingDisplayMode displayMode;
 @property (nonatomic) float halfStarThreshold;
+#if EDSTAR_IOS
+@property (nonatomic) NSInteger starSize;
+#endif
 
 @property (nonatomic,AH_WEAK) id<EDStarRatingProtocol> delegate;
 @property (nonatomic,copy) EDStarRatingReturnBlock returnBlock;
