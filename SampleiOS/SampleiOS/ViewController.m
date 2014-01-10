@@ -13,7 +13,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *starRatingLabel;
 @property (weak, nonatomic) IBOutlet EDStarRating *starRatingImage;
 @property (weak, nonatomic) IBOutlet UILabel *starRatingImageLabel;
-
+@property (strong,nonatomic) NSArray *colors;
 @end
 
 @implementation ViewController
@@ -27,6 +27,7 @@
     [super viewDidLoad];
 
     
+    self.colors = @[ [UIColor colorWithRed:0.11f green:0.38f blue:0.94f alpha:1.0f], [UIColor colorWithRed:1.0f green:0.22f blue:0.22f alpha:1.0f], [UIColor colorWithRed:0.27f green:0.85f blue:0.46f alpha:1.0f], [UIColor colorWithRed:0.35f green:0.35f blue:0.81f alpha:1.0f]];
     // Setup control using iOS7 tint Color
     _starRating.backgroundColor  = [UIColor whiteColor];
     _starRating.starImage = [[UIImage imageNamed:@"star-template"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -38,7 +39,7 @@
     _starRating.rating= 2.5;
     _starRating.displayMode=EDStarRatingDisplayHalf;
     [_starRating  setNeedsDisplay];
-    _starRating.tintColor = [UIColor colorWithRed:0.11f green:0.38f blue:0.94f alpha:1.0f];
+    _starRating.tintColor = self.colors[0];
     [self starsSelectionChanged:_starRating rating:2.5];
 
     
@@ -63,8 +64,14 @@
 
 }
 
-
-
+-(IBAction)colorChanged:(id)sender
+{
+    UISegmentedControl *segmentedControl = sender;
+    UIColor * color = self.colors[segmentedControl.selectedSegmentIndex];
+    
+    self.starRating.tintColor = color;
+    
+}
 - (void)viewDidUnload
 {
     [self setStarRating:nil];
