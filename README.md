@@ -1,5 +1,4 @@
 EDStarRating  ![Version Badge](https://go-shields.herokuapp.com/license-MIT-blue.png)
-
 ===============
 
 A configurable star rating control for OSX and iOS, similar to those found in iTunes and the App Store.
@@ -17,7 +16,7 @@ pod 'EDStarRating'
 
 and run `pod install`. 
 
-You can also install it manually by copying to project these two files: EDStarRating.h and EDStarRating.m
+You can also install it manually by copying these two files to your project: EDStarRating.h and EDStarRating.m
 
 ### Usage
 
