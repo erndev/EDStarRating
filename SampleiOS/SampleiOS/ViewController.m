@@ -25,10 +25,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    _starRating.backgroundColor  = [UIColor colorWithWhite:0.9 alpha:1.0];
-    _starRating.starImage = [UIImage imageNamed:@"star.png"];
-    _starRating.starHighlightedImage = [UIImage imageNamed:@"starhighlighted.png"];
+
+    
+    // Setup control using iOS7 tint Color
+    _starRating.backgroundColor  = [UIColor whiteColor];
+    _starRating.starImage = [[UIImage imageNamed:@"star-template"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    _starRating.starHighlightedImage = [[UIImage imageNamed:@"star-highlighted-template"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     _starRating.maxRating = 5.0;
     _starRating.delegate = self;
     _starRating.horizontalMargin = 15.0;
@@ -36,9 +38,11 @@
     _starRating.rating= 2.5;
     _starRating.displayMode=EDStarRatingDisplayHalf;
     [_starRating  setNeedsDisplay];
+    _starRating.tintColor = [UIColor colorWithRed:0.11f green:0.38f blue:0.94f alpha:1.0f];
     [self starsSelectionChanged:_starRating rating:2.5];
 
     
+    // Setup control using image
     _starRatingImage.backgroundImage=[UIImage imageNamed:@"starsbackground iOS.png"];
     _starRatingImage.starImage = [UIImage imageNamed:@"star.png"];
     _starRatingImage.starHighlightedImage = [UIImage imageNamed:@"starhighlighted.png"];
@@ -57,8 +61,9 @@
         [self starsSelectionChanged:_starRatingImage rating:rating];
     };
 
-
 }
+
+
 
 - (void)viewDidUnload
 {

@@ -376,8 +376,7 @@
     if( [self respondsToSelector:@selector(tintColor)] && img.renderingMode == UIImageRenderingModeAlwaysTemplate )
     {
         
-        // lets tint the icon - assumes your icons are black
-        UIGraphicsBeginImageContext(img.size);
+        UIGraphicsBeginImageContextWithOptions(img.size, NO, [UIScreen mainScreen].scale );
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextTranslateCTM(context, 0, img.size.height);
         CGContextScaleCTM(context, 1.0, -1.0);
@@ -396,11 +395,13 @@
 #endif
     return tintedImage;
 }
-
+#if EDSTAR_IOS && (__IPHONE_OS_VERSION_MIN_REQUIRED < 70000)
 -(void)tintColorDidChange
 {
-    
+    self.tintedStarImage = [self tintedImage:self.starImage];
+    self.tintedStarHighlightedImage = [self tintedImage:self.starHighlightedImage];
+    [self setNeedsDisplay];
 }
-
+#endif
 
 @end
