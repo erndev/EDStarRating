@@ -9,6 +9,13 @@
 
 #define ED_DEFAULT_HALFSTAR_THRESHOLD   0.6
 
+
+@interface EDStarRating()
+@property (nonatomic,strong ) EDImage *tintedStarImage;
+@property (nonatomic,strong ) EDImage *tintedStarHighlightedImage;
+@end
+
+
 @implementation EDStarRating
 @synthesize starImage;
 @synthesize starHighlightedImage;
@@ -215,7 +222,7 @@
     CGSize starSize = starHighlightedImage.size;
     for( NSInteger i=0 ; i<maxRating; i++ )
     {
-        [self drawImage:self.starImage atPosition:i];
+        [self drawImage:self.tintedStarImage atPosition:i];
         if( i < _rating )   // Highlight
         {
             CGContextSaveGState(ctx);
@@ -244,7 +251,7 @@
                     
                 }
                 
-                [self drawImage:starHighlightedImage atPosition:i];
+                [self drawImage:self.tintedStarHighlightedImage atPosition:i];
             }
             CGContextRestoreGState(ctx);
         }
@@ -346,4 +353,54 @@
         self.returnBlock(self.rating);
     
 }
+
+
+#pragma mark - Tint color Support
+-(void)setStarImage:(EDImage *)image
+{
+    starImage = image;
+    self.tintedStarImage = [self tintedImage:image];
+}
+
+-(void)setStarHighlightedImage:(EDImage *)image
+{
+    starHighlightedImage = image;
+    self.tintedStarHighlightedImage = [self tintedImage:image];
+
+}
+-(EDImage*)tintedImage:(EDImage*)img
+{
+    EDImage *tintedImage = img;
+#if EDSTAR_IOS && (__IPHONE_OS_VERSION_MIN_REQUIRED < 70000)
+    // Make sure tintColor is available (>= iOS 7.0 runtime)
+    if( [self respondsToSelector:@selector(tintColor)] && img.renderingMode == UIImageRenderingModeAlwaysTemplate )
+    {
+        
+        // lets tint the icon - assumes your icons are black
+        UIGraphicsBeginImageContext(img.size);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextTranslateCTM(context, 0, img.size.height);
+        CGContextScaleCTM(context, 1.0, -1.0);
+        CGRect rect = CGRectMake(0, 0, img.size.width, img.size.height);
+        // draw alpha-mask
+        CGContextSetBlendMode(context, kCGBlendModeNormal);
+        CGContextDrawImage(context, rect, img.CGImage);
+        // draw tint color, preserving alpha values of original image
+        CGContextSetBlendMode(context, kCGBlendModeSourceIn);
+        [self.tintColor setFill];
+        CGContextFillRect(context, rect);
+        
+        tintedImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
+#endif
+    return tintedImage;
+}
+
+-(void)tintColorDidChange
+{
+    
+}
+
+
 @end
