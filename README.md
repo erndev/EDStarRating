@@ -1,4 +1,4 @@
-EDStarRating  ![Version Badge](https://go-shields.herokuapp.com/license-MIT-blue.png)
+EDStarRating  ![Version Badge](https://go-shields.herokuapp.com/license-BSD-blue.png)
 ===============
 
 A configurable star rating control for OSX and iOS, similar to those found in iTunes and the App Store.

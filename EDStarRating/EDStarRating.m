@@ -371,7 +371,7 @@
 -(EDImage*)tintedImage:(EDImage*)img
 {
     EDImage *tintedImage = img;
-#if EDSTAR_IOS && (__IPHONE_OS_VERSION_MIN_REQUIRED < 70000)
+#if EDSTAR_IOS
     // Make sure tintColor is available (>= iOS 7.0 runtime)
     if( [self respondsToSelector:@selector(tintColor)] && img.renderingMode == UIImageRenderingModeAlwaysTemplate )
     {
@@ -395,7 +395,7 @@
 #endif
     return tintedImage;
 }
-#if EDSTAR_IOS && (__IPHONE_OS_VERSION_MIN_REQUIRED < 70000)
+#if EDSTAR_IOS
 -(void)tintColorDidChange
 {
     self.tintedStarImage = [self tintedImage:self.starImage];
