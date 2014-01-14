@@ -81,19 +81,7 @@
 
 
 
--(void)dealloc
-{
-    AH_RELEASE(starImage);
-    AH_RELEASE(starHighlightedImage);
-    AH_RELEASE(backgroundImage);
-#if EDSTAR_MACOSX
-    AH_RELEASE(backgroundColor);
-#endif
 
-#if ! __has_feature(objc_arc)
-    [super dealloc];
-#endif
-}
 #pragma mark -
 #pragma mark Setters
 -(void)setReturnBlock:(EDStarRatingReturnBlock)retBlock
@@ -177,11 +165,7 @@
     CGColorSpaceRef colorSpace = [[color colorSpace] CGColorSpace];
     
     [color getComponents:(CGFloat *)&components];
-#if __has_feature(objc_arc)
-        cgColor = (__bridge CGColorRef)AH_AUTORELEASE((__bridge id)CGColorCreate(colorSpace, components));
-#else
-    cgColor = ( CGColorRef)AH_AUTORELEASE(( id)CGColorCreate(colorSpace, components));
-#endif
+    cgColor = (__bridge CGColorRef)(__bridge id)CGColorCreate(colorSpace, components);
 
 #else
     cgColor  = color.CGColor;
@@ -358,12 +342,18 @@
 #pragma mark - Tint color Support
 -(void)setStarImage:(EDImage *)image
 {
+    if( starImage == image)
+        return;
+    
     starImage = image;
     self.tintedStarImage = [self tintedImage:image];
 }
 
 -(void)setStarHighlightedImage:(EDImage *)image
 {
+    if( starHighlightedImage == image )
+        return;
+    
     starHighlightedImage = image;
     self.tintedStarHighlightedImage = [self tintedImage:image];
 
