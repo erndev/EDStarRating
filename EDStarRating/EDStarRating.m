@@ -13,6 +13,7 @@
 @interface EDStarRating()
 @property (nonatomic,strong ) EDImage *tintedStarImage;
 @property (nonatomic,strong ) EDImage *tintedStarHighlightedImage;
+@property (nonatomic) CGColorRef backCGColor;
 @end
 
 
@@ -28,7 +29,7 @@
 @synthesize halfStarThreshold;
 @synthesize displayMode;
 #if EDSTAR_MACOSX
-@synthesize backgroundColor;
+@synthesize backgroundColor=_backgroundColor;
 #endif
 @synthesize returnBlock=_returnBlock;
 
@@ -43,6 +44,7 @@
     horizontalMargin=10.0;
     displayMode = EDStarRatingDisplayFull;
     halfStarThreshold=ED_DEFAULT_HALFSTAR_THRESHOLD;
+    [self setBackgroundColor:[EDColor clearColor]];
     
 }
 #if  EDSTAR_MACOSX
@@ -154,6 +156,21 @@
 
 }
 
+
+-(void)setBackgroundColor:(EDColor *)color
+{
+#if EDSTAR_IOS
+    [super setBackgroundColor:color];
+#else
+    _backgroundColor = color;
+#endif
+    if( color )
+    {
+        self.backCGColor = [self cgColor:color];
+    }
+}
+
+
 -(CGColorRef)cgColor:(EDColor*)color
 {
     CGColorRef cgColor = nil;
@@ -165,7 +182,8 @@
     CGColorSpaceRef colorSpace = [[color colorSpace] CGColorSpace];
     
     [color getComponents:(CGFloat *)&components];
-    cgColor = (__bridge CGColorRef)(__bridge id)CGColorCreate(colorSpace, components);
+    cgColor =  CGColorCreate(colorSpace, components);
+    CGColorSpaceRelease(colorSpace);
 
 #else
     cgColor  = color.CGColor;
@@ -192,8 +210,7 @@
     CGContextRef ctx = [self currentContext];  
     
     // Fill background color
-    EDColor *colorToDraw = self.backgroundColor==nil?[EDColor clearColor]:self.backgroundColor;
-    CGContextSetFillColorWithColor(ctx, [self cgColor:colorToDraw]);
+    CGContextSetFillColorWithColor(ctx, self.backCGColor);
     CGContextFillRect(ctx, bounds);  
     
     // Draw background Image
@@ -240,6 +257,7 @@
             CGContextRestoreGState(ctx);
         }
     }
+    
 }
 
 
