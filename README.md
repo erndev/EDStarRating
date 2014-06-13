@@ -32,7 +32,7 @@ Example:
   starRating.delegate = self;
   starRating.horizontalMargin = 12;
   starRating.editable=YES;
-  displayMode=EDStarRatingDisplayFull;
+  starRating.displayMode=EDStarRatingDisplayFull;
 
 
   starRating.rating= 2.5;
