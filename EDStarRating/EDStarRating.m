@@ -9,14 +9,6 @@
 
 #define ED_DEFAULT_HALFSTAR_THRESHOLD   0.6
 
-
-@interface EDStarRating()
-@property (nonatomic,strong ) EDImage *tintedStarImage;
-@property (nonatomic,strong ) EDImage *tintedStarHighlightedImage;
-@property (nonatomic) CGColorRef backCGColor;
-@end
-
-
 @implementation EDStarRating
 @synthesize starImage;
 @synthesize starHighlightedImage;
@@ -29,7 +21,7 @@
 @synthesize halfStarThreshold;
 @synthesize displayMode;
 #if EDSTAR_MACOSX
-@synthesize backgroundColor=_backgroundColor;
+@synthesize backgroundColor;
 #endif
 @synthesize returnBlock=_returnBlock;
 
@@ -44,7 +36,6 @@
     horizontalMargin=10.0;
     displayMode = EDStarRatingDisplayFull;
     halfStarThreshold=ED_DEFAULT_HALFSTAR_THRESHOLD;
-    [self setBackgroundColor:[EDColor clearColor]];
     
 }
 #if  EDSTAR_MACOSX
@@ -83,7 +74,19 @@
 
 
 
+-(void)dealloc
+{
+    AH_RELEASE(starImage);
+    AH_RELEASE(starHighlightedImage);
+    AH_RELEASE(backgroundImage);
+#if EDSTAR_MACOSX
+    AH_RELEASE(backgroundColor);
+#endif
 
+#if ! __has_feature(objc_arc)
+    [super dealloc];
+#endif
+}
 #pragma mark -
 #pragma mark Setters
 -(void)setReturnBlock:(EDStarRatingReturnBlock)retBlock
@@ -156,21 +159,6 @@
 
 }
 
-
--(void)setBackgroundColor:(EDColor *)color
-{
-#if EDSTAR_IOS
-    [super setBackgroundColor:color];
-#else
-    _backgroundColor = color;
-#endif
-    if( color )
-    {
-        self.backCGColor = [self cgColor:color];
-    }
-}
-
-
 -(CGColorRef)cgColor:(EDColor*)color
 {
     CGColorRef cgColor = nil;
@@ -182,8 +170,11 @@
     CGColorSpaceRef colorSpace = [[color colorSpace] CGColorSpace];
     
     [color getComponents:(CGFloat *)&components];
-    cgColor =  CGColorCreate(colorSpace, components);
-    CGColorSpaceRelease(colorSpace);
+#if __has_feature(objc_arc)
+        cgColor = (__bridge CGColorRef)AH_AUTORELEASE((__bridge id)CGColorCreate(colorSpace, components));
+#else
+    cgColor = ( CGColorRef)AH_AUTORELEASE(( id)CGColorCreate(colorSpace, components));
+#endif
 
 #else
     cgColor  = color.CGColor;
@@ -210,7 +201,8 @@
     CGContextRef ctx = [self currentContext];  
     
     // Fill background color
-    CGContextSetFillColorWithColor(ctx, self.backCGColor);
+    EDColor *colorToDraw = self.backgroundColor==nil?[EDColor clearColor]:self.backgroundColor;
+    CGContextSetFillColorWithColor(ctx, [self cgColor:colorToDraw]);
     CGContextFillRect(ctx, bounds);  
     
     // Draw background Image
@@ -223,7 +215,7 @@
     CGSize starSize = starHighlightedImage.size;
     for( NSInteger i=0 ; i<maxRating; i++ )
     {
-        [self drawImage:self.tintedStarImage atPosition:i];
+        [self drawImage:self.starImage atPosition:i];
         if( i < _rating )   // Highlight
         {
             CGContextSaveGState(ctx);
@@ -252,12 +244,11 @@
                     
                 }
                 
-                [self drawImage:self.tintedStarHighlightedImage atPosition:i];
+                [self drawImage:starHighlightedImage atPosition:i];
             }
             CGContextRestoreGState(ctx);
         }
     }
-    
 }
 
 
@@ -333,7 +324,15 @@
     
     UITouch *touch = [touches anyObject];
     CGPoint touchLocation = [touch locationInView:self];
-    self.rating =[self starsForPoint:touchLocation]; 
+    self.rating =[self starsForPoint:touchLocation];
+    
+    if( self.delegate && [self.delegate respondsToSelector:@selector(starsSelectionChanged:rating:)] ){
+        UIImage * img = [self.delegate starsSelectionChanged:self rating:self.rating];
+        if (img != nil) {
+            starHighlightedImage = img;
+        }
+    }
+    
     [self setNeedsDisplay];
 }
 
@@ -348,68 +347,15 @@
     if( !editable )
         return;
     
-    if( self.delegate && [self.delegate respondsToSelector:@selector(starsSelectionChanged:rating:)] )
-        [self.delegate starsSelectionChanged:self rating:self.rating];
+    if( self.delegate && [self.delegate respondsToSelector:@selector(starsSelectionChanged:rating:)] ){
+        UIImage * img = [self.delegate starsSelectionChanged:self rating:self.rating];
+        if (img != nil) {
+            starHighlightedImage = img;
+        }
+    }
     
     if( self.returnBlock)
         self.returnBlock(self.rating);
     
 }
-
-
-#pragma mark - Tint color Support
--(void)setStarImage:(EDImage *)image
-{
-    if( starImage == image)
-        return;
-    
-    starImage = image;
-    self.tintedStarImage = [self tintedImage:image];
-}
-
--(void)setStarHighlightedImage:(EDImage *)image
-{
-    if( starHighlightedImage == image )
-        return;
-    
-    starHighlightedImage = image;
-    self.tintedStarHighlightedImage = [self tintedImage:image];
-
-}
--(EDImage*)tintedImage:(EDImage*)img
-{
-    EDImage *tintedImage = img;
-#if EDSTAR_IOS
-    // Make sure tintColor is available (>= iOS 7.0 runtime)
-    if( [self respondsToSelector:@selector(tintColor)] && img.renderingMode == UIImageRenderingModeAlwaysTemplate )
-    {
-        
-        UIGraphicsBeginImageContextWithOptions(img.size, NO, [UIScreen mainScreen].scale );
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextTranslateCTM(context, 0, img.size.height);
-        CGContextScaleCTM(context, 1.0, -1.0);
-        CGRect rect = CGRectMake(0, 0, img.size.width, img.size.height);
-        // draw alpha-mask
-        CGContextSetBlendMode(context, kCGBlendModeNormal);
-        CGContextDrawImage(context, rect, img.CGImage);
-        // draw tint color, preserving alpha values of original image
-        CGContextSetBlendMode(context, kCGBlendModeSourceIn);
-        [self.tintColor setFill];
-        CGContextFillRect(context, rect);
-        
-        tintedImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-    }
-#endif
-    return tintedImage;
-}
-#if EDSTAR_IOS
--(void)tintColorDidChange
-{
-    self.tintedStarImage = [self tintedImage:self.starImage];
-    self.tintedStarHighlightedImage = [self tintedImage:self.starHighlightedImage];
-    [self setNeedsDisplay];
-}
-#endif
-
 @end
