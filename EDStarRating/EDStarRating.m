@@ -20,12 +20,12 @@
 @implementation EDStarRating
 @synthesize starImage;
 @synthesize starHighlightedImage;
-@synthesize rating=_rating;
-@synthesize maxRating;
+@synthesize rating = _rating;
+@synthesize maxRating = _maxRating;
 @synthesize backgroundImage;
 @synthesize editable;
-@synthesize delegate=_delegate;
-@synthesize horizontalMargin;
+@synthesize delegate = _delegate;
+@synthesize horizontalMargin = _horizontalMargin;
 @synthesize halfStarThreshold;
 @synthesize displayMode;
 #if EDSTAR_MACOSX
@@ -39,9 +39,9 @@
 
 -(void)setDefaultProperties
 {
-    maxRating=5.0;
+    _maxRating=5.0;
     _rating=0.0;
-    horizontalMargin=10.0;
+    _horizontalMargin=10.0;
     displayMode = EDStarRatingDisplayFull;
     halfStarThreshold=ED_DEFAULT_HALFSTAR_THRESHOLD;
     [self setBackgroundColor:[EDColor clearColor]];
@@ -110,19 +110,47 @@
     [self setNeedsDisplay];
 }
 
+- (void)setHorizontalMargin:(CGFloat)horizontalMargin
+{
+    _horizontalMargin = horizontalMargin;
+
+    [self setNeedsDisplay];
+    if ([self respondsToSelector:@selector(invalidateIntrinsicContentSize)]) {
+        [self invalidateIntrinsicContentSize];
+    }
+}
+
+- (void)setMaxRating:(NSInteger)maxRating
+{
+    _maxRating = maxRating;
+
+    [self setNeedsDisplay];
+    if ([self respondsToSelector:@selector(invalidateIntrinsicContentSize)]) {
+        [self invalidateIntrinsicContentSize];
+    }
+}
+
+#pragma mark - Autolayout
+
+- (CGSize)intrinsicContentSize
+{
+    return CGSizeMake((self.starHighlightedImage.size.width * self.maxRating) + (self.horizontalMargin * 2),
+                      self.starHighlightedImage.size.height);
+}
+
 #pragma mark -
 #pragma mark Drawing
 -(CGPoint)pointOfStarAtPosition:(NSInteger)position highlighted:(BOOL)hightlighted
 {
     CGSize size = hightlighted?starHighlightedImage.size:starImage.size;
     
-    NSInteger starsSpace = self.bounds.size.width - 2*horizontalMargin;
+    NSInteger starsSpace = self.bounds.size.width - 2*_horizontalMargin;
     
     NSInteger interSpace = 0;
-    interSpace = maxRating-1>0?(starsSpace - (maxRating)*size.width)/(maxRating-1):0;
+    interSpace = self.maxRating-1>0?(starsSpace - (self.maxRating)*size.width)/(self.maxRating-1):0;
     if( interSpace <0 )
         interSpace=0;
-    CGFloat x = horizontalMargin + size.width*position;
+    CGFloat x = self.horizontalMargin + size.width*position;
     if( position >0 )
         x+=interSpace*position;
     CGFloat y = (self.bounds.size.height - size.height)/2.0;
@@ -221,7 +249,7 @@
     
     // Draw rating Images
     CGSize starSize = starHighlightedImage.size;
-    for( NSInteger i=0 ; i<maxRating; i++ )
+    for( NSInteger i=0 ; i<self.maxRating; i++ )
     {
         [self drawImage:self.tintedStarImage atPosition:i];
         if( i < _rating )   // Highlight
@@ -266,7 +294,7 @@
 -(float) starsForPoint:(CGPoint)point
 {
     float stars=0;
-    for( NSInteger i=0; i<maxRating; i++ )
+    for( NSInteger i=0; i<self.maxRating; i++ )
     {
         CGPoint p =[self pointOfStarAtPosition:i highlighted:NO];
         if( point.x > p.x )
@@ -365,6 +393,10 @@
     
     starImage = image;
     self.tintedStarImage = [self tintedImage:image];
+
+    if ([self respondsToSelector:@selector(invalidateIntrinsicContentSize)]) {
+        [self invalidateIntrinsicContentSize];
+    }
 }
 
 -(void)setStarHighlightedImage:(EDImage *)image
@@ -375,6 +407,9 @@
     starHighlightedImage = image;
     self.tintedStarHighlightedImage = [self tintedImage:image];
 
+    if ([self respondsToSelector:@selector(invalidateIntrinsicContentSize)]) {
+        [self invalidateIntrinsicContentSize];
+    }
 }
 -(EDImage*)tintedImage:(EDImage*)img
 {
