@@ -47,11 +47,12 @@
     _starRatingImage.backgroundImage=[UIImage imageNamed:@"starsbackground iOS.png"];
     _starRatingImage.starImage = [UIImage imageNamed:@"star.png"];
     _starRatingImage.starHighlightedImage = [UIImage imageNamed:@"starhighlighted.png"];
+    _starRatingImage.minRating = 2.0;
     _starRatingImage.maxRating = 5.0;
     _starRatingImage.delegate = self;
     _starRatingImage.horizontalMargin = 12;
     _starRatingImage.editable=YES;
-    _starRatingImage.rating= 2.5;
+    _starRatingImage.rating= 0;
     _starRatingImage.displayMode=EDStarRatingDisplayAccurate;
     [self starsSelectionChanged:_starRatingImage rating:2.5];
     // This one will use the returnBlock instead of the delegate

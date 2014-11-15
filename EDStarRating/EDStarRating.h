@@ -54,6 +54,7 @@ typedef UIImage     EDImage;
 @property (nonatomic,strong) EDImage *backgroundImage;
 @property (nonatomic,strong) EDImage *starHighlightedImage;
 @property (nonatomic,strong) EDImage *starImage;
+@property (nonatomic) NSInteger minRating;
 @property (nonatomic) NSInteger maxRating;
 @property (nonatomic) float rating;
 @property (nonatomic) CGFloat horizontalMargin;
