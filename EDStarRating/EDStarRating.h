@@ -46,6 +46,7 @@ typedef UIImage     EDImage;
 
 #endif
 
+IB_DESIGNABLE;
 @interface EDStarRating : EDControl
 
 #if EDSTAR_MACOSX
@@ -54,9 +55,9 @@ typedef UIImage     EDImage;
 @property (nonatomic,strong) EDImage *backgroundImage;
 @property (nonatomic,strong) EDImage *starHighlightedImage;
 @property (nonatomic,strong) EDImage *starImage;
-@property (nonatomic) NSInteger maxRating;
-@property (nonatomic) float rating;
-@property (nonatomic) CGFloat horizontalMargin;
+@property (nonatomic) IBInspectable NSInteger maxRating;
+@property (nonatomic) IBInspectable float rating;
+@property (nonatomic) IBInspectable CGFloat horizontalMargin;
 @property (nonatomic) BOOL editable;
 @property (nonatomic) EDStarRatingDisplayMode displayMode;
 @property (nonatomic) float halfStarThreshold;
