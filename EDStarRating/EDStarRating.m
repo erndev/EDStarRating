@@ -356,6 +356,19 @@
     
 }
 
+#if EDSTAR_IOS
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    if( !editable )
+        return;
+    
+    if( self.delegate && [self.delegate respondsToSelector:@selector(starsSelectionChanged:rating:)] )
+        [self.delegate starsSelectionChanged:self rating:self.rating];
+    
+    if( self.returnBlock)
+        self.returnBlock(self.rating);
+}
+#endif
+
 
 #pragma mark - Tint color Support
 -(void)setStarImage:(EDImage *)image
