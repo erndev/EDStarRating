@@ -18,20 +18,6 @@
 
 
 @implementation EDStarRating
-@synthesize starImage;
-@synthesize starHighlightedImage;
-@synthesize rating=_rating;
-@synthesize maxRating;
-@synthesize backgroundImage;
-@synthesize editable;
-@synthesize delegate=_delegate;
-@synthesize horizontalMargin;
-@synthesize halfStarThreshold;
-@synthesize displayMode;
-#if EDSTAR_MACOSX
-@synthesize backgroundColor=_backgroundColor;
-#endif
-@synthesize returnBlock=_returnBlock;
 
 #pragma mark -
 #pragma mark Init & dealloc
@@ -39,11 +25,12 @@
 
 -(void)setDefaultProperties
 {
-    maxRating=5.0;
-    _rating=0.0;
-    horizontalMargin=10.0;
-    displayMode = EDStarRatingDisplayFull;
-    halfStarThreshold=ED_DEFAULT_HALFSTAR_THRESHOLD;
+    _minRating = 0.0;
+    _maxRating = 5.0;
+    _rating = 0.0;
+    _horizontalMargin = 10.0;
+    _displayMode = EDStarRatingDisplayFull;
+    _halfStarThreshold = ED_DEFAULT_HALFSTAR_THRESHOLD;
     [self setBackgroundColor:[EDColor clearColor]];
     
 }
@@ -106,7 +93,7 @@
 
 -(void)setDisplayMode:(EDStarRatingDisplayMode)dispMode
 {
-    displayMode = dispMode;
+    _displayMode = dispMode;
     [self setNeedsDisplay];
 }
 
@@ -114,15 +101,15 @@
 #pragma mark Drawing
 -(CGPoint)pointOfStarAtPosition:(NSInteger)position highlighted:(BOOL)hightlighted
 {
-    CGSize size = hightlighted?starHighlightedImage.size:starImage.size;
+    CGSize size = hightlighted?_starHighlightedImage.size:_starImage.size;
     
-    NSInteger starsSpace = self.bounds.size.width - 2*horizontalMargin;
+    NSInteger starsSpace = self.bounds.size.width - 2*_horizontalMargin;
     
     NSInteger interSpace = 0;
-    interSpace = maxRating-1>0?(starsSpace - (maxRating)*size.width)/(maxRating-1):0;
+    interSpace = _maxRating-1>0?(starsSpace - (_maxRating)*size.width)/(_maxRating-1):0;
     if( interSpace <0 )
         interSpace=0;
-    CGFloat x = horizontalMargin + size.width*position;
+    CGFloat x = _horizontalMargin + size.width*position;
     if( position >0 )
         x+=interSpace*position;
     CGFloat y = (self.bounds.size.height - size.height)/2.0;
@@ -131,13 +118,13 @@
 
 -(void)drawBackgroundImage
 {
-    if( backgroundImage )
+    if( _backgroundImage )
     {
 #if EDSTAR_MACOSX
         [backgroundImage drawInRect:self.bounds fromRect:NSMakeRect(0.0, 0.0, backgroundImage.size.width, backgroundImage.size.height) operation:NSCompositeSourceOver fraction:1.0];
         
 #else
-        [backgroundImage drawInRect:self.bounds];
+        [_backgroundImage drawInRect:self.bounds];
         
 #endif
     }
@@ -214,14 +201,14 @@
     CGContextFillRect(ctx, bounds);  
     
     // Draw background Image
-    if( backgroundImage )
+    if( _backgroundImage )
     {
         [self drawBackgroundImage];
     }
     
     // Draw rating Images
-    CGSize starSize = starHighlightedImage.size;
-    for( NSInteger i=0 ; i<maxRating; i++ )
+    CGSize starSize = _starHighlightedImage.size;
+    for( NSInteger i=0 ; i<_maxRating; i++ )
     {
         [self drawImage:self.tintedStarImage atPosition:i];
         if( i < _rating )   // Highlight
@@ -236,11 +223,11 @@
                     CGRect rectClip;
                     rectClip.origin = starPoint;
                     rectClip.size = starSize;
-                    if( displayMode == EDStarRatingDisplayHalf && difference < halfStarThreshold )    // Draw half star image
+                    if( _displayMode == EDStarRatingDisplayHalf && difference < _halfStarThreshold )    // Draw half star image
                     {
                         rectClip.size.width/=2.0;
                     }
-                    else if( displayMode == EDStarRatingDisplayAccurate )
+                    else if( _displayMode == EDStarRatingDisplayAccurate )
                     {
                         rectClip.size.width*=difference;
                     }
@@ -265,8 +252,8 @@
 #pragma mark Mouse/Touch Interaction
 -(float) starsForPoint:(CGPoint)point
 {
-    float stars=0;
-    for( NSInteger i=0; i<maxRating; i++ )
+    float stars = _minRating;
+    for( NSInteger i=stars; i<_maxRating; i++ )
     {
         CGPoint p =[self pointOfStarAtPosition:i highlighted:NO];
         if( point.x > p.x )
@@ -305,7 +292,7 @@
 #else
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
 {
-    if( !editable )
+    if( !_editable )
         return;
 
     UITouch *touch = [touches anyObject];
@@ -328,7 +315,7 @@
 #else
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if( !editable )
+    if( !_editable )
         return;
     
     UITouch *touch = [touches anyObject];
@@ -345,7 +332,7 @@
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event 
 #endif
 {
-    if( !editable )
+    if( !_editable )
         return;
     
     if( self.delegate && [self.delegate respondsToSelector:@selector(starsSelectionChanged:rating:)] )
@@ -360,19 +347,19 @@
 #pragma mark - Tint color Support
 -(void)setStarImage:(EDImage *)image
 {
-    if( starImage == image)
+    if( _starImage == image)
         return;
     
-    starImage = image;
+    _starImage = image;
     self.tintedStarImage = [self tintedImage:image];
 }
 
 -(void)setStarHighlightedImage:(EDImage *)image
 {
-    if( starHighlightedImage == image )
+    if( _starHighlightedImage == image )
         return;
     
-    starHighlightedImage = image;
+    _starHighlightedImage = image;
     self.tintedStarHighlightedImage = [self tintedImage:image];
 
 }
