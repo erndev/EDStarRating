@@ -51,6 +51,7 @@ But it's only tested it with ARC enabled in 10.8+ and iOS 6.0+. Let me now if it
 
 ![EDStarRating](https://github.com/erndev/EDStarRating/raw/master/edstarrating.png)
 ![EDStarRating](https://github.com/erndev/EDStarRating/raw/master/edstarrating-ios.png)
+![EDStarRating](https://github.com/beiliubei/EDStarRating/raw/master/edstarrating.gif)
 
 ### License
 BSD License.
