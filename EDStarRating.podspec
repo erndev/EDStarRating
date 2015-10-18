@@ -5,6 +5,7 @@ Pod::Spec.new do |s|
   s.ios.frameworks  = 'CoreGraphics'
   s.ios.deployment_target = '4.3'
   s.osx.deployment_target = '10.6'
+  s.tvos.deployment_target = '9.0'
   s.description  = <<-DESC
                 A configurable star rating control for OSX and iOS, similar to those found in iTunes and the App Store.
 	DESC
