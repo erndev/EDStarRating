@@ -9,14 +9,16 @@
 /* Begin PBXBuildFile section */
 		01C5BF7A17A3F04800B7B0BC /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C5BF7917A3F04800B7B0BC /* Default-568h@2x.png */; };
 		5BBC25321824FCEF00B5B592 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BBC25311824FCEF00B5B592 /* QuartzCore.framework */; };
+		5BD3083F1C381D640003AB55 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5BD3083E1C381D640003AB55 /* Main.storyboard */; };
+		5BD308421C381D8F0003AB55 /* SampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD308411C381D8F0003AB55 /* SampleViewController.m */; };
+		5BD308451C3847C00003AB55 /* StarLargeEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BD308431C3847C00003AB55 /* StarLargeEmpty.png */; };
+		5BD308461C3847C00003AB55 /* StarLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BD308441C3847C00003AB55 /* StarLarge.png */; };
 		94B6315B15E4E53F00C7F229 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94B6315A15E4E53F00C7F229 /* UIKit.framework */; };
 		94B6315D15E4E53F00C7F229 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94B6315C15E4E53F00C7F229 /* Foundation.framework */; };
 		94B6315F15E4E53F00C7F229 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94B6315E15E4E53F00C7F229 /* CoreGraphics.framework */; };
 		94B6316515E4E53F00C7F229 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 94B6316315E4E53F00C7F229 /* InfoPlist.strings */; };
 		94B6316715E4E53F00C7F229 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 94B6316615E4E53F00C7F229 /* main.m */; };
 		94B6316B15E4E53F00C7F229 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 94B6316A15E4E53F00C7F229 /* AppDelegate.m */; };
-		94B6316E15E4E53F00C7F229 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94B6316D15E4E53F00C7F229 /* ViewController.m */; };
-		94B6317115E4E53F00C7F229 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94B6316F15E4E53F00C7F229 /* ViewController.xib */; };
 		94B6317A15E4E56100C7F229 /* EDStarRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 94B6317915E4E56100C7F229 /* EDStarRating.m */; };
 		94B6317E15E4E74A00C7F229 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 94B6317B15E4E74A00C7F229 /* star.png */; };
 		94B6317F15E4E74A00C7F229 /* starhighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 94B6317C15E4E74A00C7F229 /* starhighlighted.png */; };
@@ -30,6 +32,11 @@
 /* Begin PBXFileReference section */
 		01C5BF7917A3F04800B7B0BC /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		5BBC25311824FCEF00B5B592 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		5BD3083E1C381D640003AB55 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		5BD308401C381D8F0003AB55 /* SampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleViewController.h; sourceTree = "<group>"; };
+		5BD308411C381D8F0003AB55 /* SampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SampleViewController.m; sourceTree = "<group>"; };
+		5BD308431C3847C00003AB55 /* StarLargeEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StarLargeEmpty.png; sourceTree = "<group>"; };
+		5BD308441C3847C00003AB55 /* StarLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StarLarge.png; sourceTree = "<group>"; };
 		94B6315615E4E53F00C7F229 /* SampleiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		94B6315A15E4E53F00C7F229 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		94B6315C15E4E53F00C7F229 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -40,9 +47,6 @@
 		94B6316815E4E53F00C7F229 /* SampleiOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SampleiOS-Prefix.pch"; sourceTree = "<group>"; };
 		94B6316915E4E53F00C7F229 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		94B6316A15E4E53F00C7F229 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		94B6316C15E4E53F00C7F229 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		94B6316D15E4E53F00C7F229 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		94B6317015E4E53F00C7F229 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
 		94B6317815E4E56100C7F229 /* EDStarRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EDStarRating.h; path = ../EDStarRating/EDStarRating.h; sourceTree = "<group>"; };
 		94B6317915E4E56100C7F229 /* EDStarRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EDStarRating.m; path = ../EDStarRating/EDStarRating.m; sourceTree = "<group>"; };
 		94B6317B15E4E74A00C7F229 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = star.png; path = ../../sample/sample/star.png; sourceTree = "<group>"; };
@@ -101,6 +105,8 @@
 		94B6316015E4E53F00C7F229 /* SampleiOS */ = {
 			isa = PBXGroup;
 			children = (
+				5BD308431C3847C00003AB55 /* StarLargeEmpty.png */,
+				5BD308441C3847C00003AB55 /* StarLarge.png */,
 				94C7B95318805333009CBED2 /* star-highlighted-template.png */,
 				94C7B95418805333009CBED2 /* star-highlighted-template@2x.png */,
 				94C7B95518805333009CBED2 /* star-template.png */,
@@ -110,10 +116,10 @@
 				94B6317C15E4E74A00C7F229 /* starhighlighted.png */,
 				94B6316915E4E53F00C7F229 /* AppDelegate.h */,
 				94B6316A15E4E53F00C7F229 /* AppDelegate.m */,
-				94B6316C15E4E53F00C7F229 /* ViewController.h */,
-				94B6316D15E4E53F00C7F229 /* ViewController.m */,
-				94B6316F15E4E53F00C7F229 /* ViewController.xib */,
 				94B6316115E4E53F00C7F229 /* Supporting Files */,
+				5BD3083E1C381D640003AB55 /* Main.storyboard */,
+				5BD308401C381D8F0003AB55 /* SampleViewController.h */,
+				5BD308411C381D8F0003AB55 /* SampleViewController.m */,
 			);
 			path = SampleiOS;
 			sourceTree = "<group>";
@@ -165,7 +171,7 @@
 		94B6314D15E4E53F00C7F229 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0720;
 			};
 			buildConfigurationList = 94B6315015E4E53F00C7F229 /* Build configuration list for PBXProject "SampleiOS" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -193,7 +199,9 @@
 				94B6316515E4E53F00C7F229 /* InfoPlist.strings in Resources */,
 				94C7B95A18805333009CBED2 /* star-template@2x.png in Resources */,
 				94C7B95718805333009CBED2 /* star-highlighted-template.png in Resources */,
-				94B6317115E4E53F00C7F229 /* ViewController.xib in Resources */,
+				5BD308461C3847C00003AB55 /* StarLarge.png in Resources */,
+				5BD308451C3847C00003AB55 /* StarLargeEmpty.png in Resources */,
+				5BD3083F1C381D640003AB55 /* Main.storyboard in Resources */,
 				94B6317E15E4E74A00C7F229 /* star.png in Resources */,
 				94C7B95818805333009CBED2 /* star-highlighted-template@2x.png in Resources */,
 				94B6317F15E4E74A00C7F229 /* starhighlighted.png in Resources */,
@@ -209,9 +217,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BD308421C381D8F0003AB55 /* SampleViewController.m in Sources */,
 				94B6316715E4E53F00C7F229 /* main.m in Sources */,
 				94B6316B15E4E53F00C7F229 /* AppDelegate.m in Sources */,
-				94B6316E15E4E53F00C7F229 /* ViewController.m in Sources */,
 				94B6317A15E4E56100C7F229 /* EDStarRating.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -227,14 +235,6 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		94B6316F15E4E53F00C7F229 /* ViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				94B6317015E4E53F00C7F229 /* en */,
-			);
-			name = ViewController.xib;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -248,11 +248,15 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -266,7 +270,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -282,10 +286,13 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -293,7 +300,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -306,6 +313,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SampleiOS/SampleiOS-Prefix.pch";
 				INFOPLIST_FILE = "SampleiOS/SampleiOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cocoawitchurros.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -317,6 +326,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SampleiOS/SampleiOS-Prefix.pch";
 				INFOPLIST_FILE = "SampleiOS/SampleiOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.cocoawitchurros.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
