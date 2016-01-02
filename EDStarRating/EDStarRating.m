@@ -20,8 +20,8 @@
 
 
 @implementation EDStarRating
-@synthesize starImage;
-@synthesize starHighlightedImage;
+@synthesize starImage = _starImage;
+@synthesize starHighlightedImage = _starHighlightedImage;
 @synthesize rating=_rating;
 @synthesize maxRating;
 @synthesize backgroundImage;
@@ -125,31 +125,13 @@
     }
     [self setNeedsDisplay];
 }
-
--(void)setStarImage:(UIImage *)starImage
-{
-    _starImage = starImage;
-    if(_starSize != 0){
-        _starImage = [self resizeImageToSize:CGSizeMake(_starSize, _starSize) withImage:_starImage];
-    }
-    [self setNeedsDisplay];
-}
-
--(void)setStarHighlightedImage:(UIImage *)starHighlightedImage
-{
-    _starHighlightedImage = starHighlightedImage;
-    if(_starSize != 0){
-        _starHighlightedImage = [self resizeImageToSize:CGSizeMake(_starSize, _starSize) withImage:_starHighlightedImage];
-    }
-    [self setNeedsDisplay];
-}
 #endif
 
 #pragma mark -
 #pragma mark Drawing
 -(CGPoint)pointOfStarAtPosition:(NSInteger)position highlighted:(BOOL)hightlighted
 {
-    CGSize size = hightlighted?starHighlightedImage.size:starImage.size;
+    CGSize size = hightlighted?_starHighlightedImage.size:_starImage.size;
     
     NSInteger starsSpace = self.bounds.size.width - 2*horizontalMargin;
     
@@ -255,7 +237,7 @@
     }
     
     // Draw rating Images
-    CGSize starSize = starHighlightedImage.size;
+    CGSize starSize = _starHighlightedImage.size;
     for( NSInteger i=0 ; i<maxRating; i++ )
     {
         [self drawImage:self.tintedStarImage atPosition:i];
@@ -395,22 +377,29 @@
 #pragma mark - Tint color Support
 -(void)setStarImage:(EDImage *)image
 {
-    if( starImage == image)
+    if( _starImage == image)
         return;
     
-    starImage = image;
+    _starImage = image;
+    if(_starSize != 0){
+        _starImage = [self resizeImageToSize:CGSizeMake(_starSize, _starSize) withImage:_starImage];
+    }
     self.tintedStarImage = [self tintedImage:image];
 }
 
 -(void)setStarHighlightedImage:(EDImage *)image
 {
-    if( starHighlightedImage == image )
+    if( _starHighlightedImage == image )
         return;
     
-    starHighlightedImage = image;
+    _starHighlightedImage = image;
+    if(_starSize != 0){
+        _starHighlightedImage = [self resizeImageToSize:CGSizeMake(_starSize, _starSize) withImage:_starHighlightedImage];
+    }
     self.tintedStarHighlightedImage = [self tintedImage:image];
 
 }
+
 -(EDImage*)tintedImage:(EDImage*)img
 {
     EDImage *tintedImage = img;
