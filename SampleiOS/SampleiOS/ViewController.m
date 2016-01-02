@@ -13,7 +13,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *starRatingLabel;
 @property (weak, nonatomic) IBOutlet EDStarRating *starRatingImage;
 @property (weak, nonatomic) IBOutlet UILabel *starRatingImageLabel;
-
+@property (strong,nonatomic) NSArray *colors;
 @end
 
 @implementation ViewController
@@ -25,11 +25,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    _starRating.backgroundColor  = [UIColor colorWithWhite:0.9 alpha:1.0];
-    _starRating.starSize = 20;
-    _starRating.starImage = [UIImage imageNamed:@"star.png"];
-    _starRating.starHighlightedImage = [UIImage imageNamed:@"starhighlighted.png"];
+
+    
+    self.colors = @[ [UIColor colorWithRed:0.11f green:0.38f blue:0.94f alpha:1.0f], [UIColor colorWithRed:1.0f green:0.22f blue:0.22f alpha:1.0f], [UIColor colorWithRed:0.27f green:0.85f blue:0.46f alpha:1.0f], [UIColor colorWithRed:0.35f green:0.35f blue:0.81f alpha:1.0f]];
+    // Setup control using iOS7 tint Color
+    _starRating.backgroundColor  = [UIColor whiteColor];
+    _starRating.starImage = [[UIImage imageNamed:@"star-template"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    _starRating.starHighlightedImage = [[UIImage imageNamed:@"star-highlighted-template"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     _starRating.maxRating = 5.0;
     _starRating.delegate = self;
     _starRating.horizontalMargin = 15.0;
@@ -37,9 +39,11 @@
     _starRating.rating= 2.5;
     _starRating.displayMode=EDStarRatingDisplayHalf;
     [_starRating  setNeedsDisplay];
+    _starRating.tintColor = self.colors[0];
     [self starsSelectionChanged:_starRating rating:2.5];
 
     
+    // Setup control using image
     _starRatingImage.backgroundImage=[UIImage imageNamed:@"starsbackground iOS.png"];
     _starRatingImage.starImage = [UIImage imageNamed:@"star.png"];
     _starRatingImage.starHighlightedImage = [UIImage imageNamed:@"starhighlighted.png"];
@@ -58,9 +62,16 @@
         [self starsSelectionChanged:_starRatingImage rating:rating];
     };
 
-
 }
 
+-(IBAction)colorChanged:(id)sender
+{
+    UISegmentedControl *segmentedControl = sender;
+    UIColor * color = self.colors[segmentedControl.selectedSegmentIndex];
+    
+    self.starRating.tintColor = color;
+    
+}
 - (void)viewDidUnload
 {
     [self setStarRating:nil];
