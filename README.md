@@ -1,17 +1,17 @@
 EDStarRating  ![Version Badge](https://go-shields.herokuapp.com/license-BSD-blue.png)
 ===============
 
-A configurable star rating control for OSX and iOS, similar to those found in iTunes and the App Store.
+A configurable star rating control for OSX and iOS, similar to those found in iTunes and the App Store. Fork of https://github.com/erndev/EDStarRating including support for resizing large star images. Additionally I have rewritten the iOS sample project with the additional presentation of the resizing code.
 
 [![Badge w/ Version](https://cocoapod-badges.herokuapp.com/v/EDStarRating/badge.png)](https://cocoadocs.org/docsets/EDStarRating)
 [![Badge w/ Platform](https://cocoapod-badges.herokuapp.com/p/EDStarRating/badge.svg)](https://cocoadocs.org/docsets/EDStarRating)
 
 ###Installation
 
-The easiest way to install EDStarRating is via [CocoaPods](http://cocoapods.org). Add this line to your Podfile:
+The easiest way to install this fork of EDStarRating is via [CocoaPods](http://cocoapods.org). Add this line to your Podfile:
 
 ```ruby
-pod 'EDStarRating'
+pod 'EDStarRating', :git => 'https://github.com/martinpfannemueller/EDStarRating.git'
 ```
 
 and run `pod install`. 
@@ -36,6 +36,9 @@ Example:
 
 
   starRating.rating= 2.5;
+  
+  // Resizing of large star image by setting starSize property
+  starRating.starSize = 20;
 
 ```
 ### tintColor support in iOS 7
@@ -50,7 +53,7 @@ But it's only tested it with ARC enabled in 10.8+ and iOS 6.0+. Let me now if it
 ### Screenshots
 
 ![EDStarRating](https://github.com/erndev/EDStarRating/raw/master/edstarrating.png)
-![EDStarRating](https://github.com/erndev/EDStarRating/raw/master/edstarrating-ios.png)
+![EDStarRating](https://raw.githubusercontent.com/martinpfannemueller/EDStarRating/master/edstarrating-ios.png)
 
 ### License
 BSD License.
@@ -80,5 +83,5 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ### Star icons
-The star icons and backgrounds used in the sample have been created by [Dan Deming-Henes
+The star icons and backgrounds taken from the original project used in the sample have been created by [Dan Deming-Henes
 ](http://strandeddesign.com).
