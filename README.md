@@ -24,7 +24,7 @@ You can also install it manually by copying these two files to your project: EDS
 
 Example:
 
-```
+```objective-c
 
   starRating.starImage = [NSImage imageNamed:@"star.png"];
   starRating.starHighlightedImage = [NSImage imageNamed:@"starhighlighted.png"];
