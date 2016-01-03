@@ -1,7 +1,7 @@
 EDStarRating  ![Version Badge](https://go-shields.herokuapp.com/license-BSD-blue.png)
 ===============
 
-A configurable star rating control for OSX and iOS, similar to those found in iTunes and the App Store. Fork of https://github.com/erndev/EDStarRating including support for resizing large star images. Additionally I have rewritten the iOS sample project with the additional presentation of the resizing code.
+A configurable star rating control for OSX and iOS, similar to those found in iTunes and the App Store. Fork of https://github.com/erndev/EDStarRating including support for resizing large star images on iOS. Additionally I have rewritten the iOS sample project with the additional presentation of the resizing code.
 
 [![Badge w/ Version](https://cocoapod-badges.herokuapp.com/v/EDStarRating/badge.png)](https://cocoadocs.org/docsets/EDStarRating)
 [![Badge w/ Platform](https://cocoapod-badges.herokuapp.com/p/EDStarRating/badge.svg)](https://cocoadocs.org/docsets/EDStarRating)
