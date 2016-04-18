@@ -107,11 +107,7 @@
 
 -(void)setRating:(float)ratingParam
 {
-    if(ratingParam < minRating){
-        _rating = minRating;
-    }else{
-        _rating = ratingParam;
-    }
+    _rating = ratingParam;
     [self setNeedsDisplay];
 }
 
@@ -307,6 +303,11 @@
             stars+=increment;
         }
     }
+    
+    if(stars < minRating){
+        stars = minRating;
+    }
+    
     return stars;
 }
 
@@ -319,7 +320,6 @@
     if ([theEvent type] == NSLeftMouseDown) {
         
         NSPoint pointInView   = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-        
         self.rating = [self starsForPoint:pointInView];
         [self setNeedsDisplay];
     }
@@ -333,7 +333,7 @@
 
     UITouch *touch = [touches anyObject];
     CGPoint touchLocation = [touch locationInView:self];
-    self.rating =[self starsForPoint:touchLocation];
+    self.rating = [self starsForPoint:touchLocation];
     [self setNeedsDisplay];
 }
 #endif
