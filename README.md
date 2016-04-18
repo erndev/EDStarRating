@@ -14,7 +14,7 @@ The easiest way to install this fork of EDStarRating is via [CocoaPods](http://c
 pod 'EDStarRating', :git => 'https://github.com/martinpfannemueller/EDStarRating.git'
 ```
 
-and run `pod install`. 
+and run `pod install`.
 
 You can also install it manually by copying these two files to your project: EDStarRating.h and EDStarRating.m
 
@@ -28,6 +28,7 @@ Example:
 
   starRating.starImage = [NSImage imageNamed:@"star.png"];
   starRating.starHighlightedImage = [NSImage imageNamed:@"starhighlighted.png"];
+  starRating.minRating = 1.0; // Prevents ratings below a minimum
   starRating.maxRating = 5.0;
   starRating.delegate = self;
   starRating.horizontalMargin = 12;
@@ -36,7 +37,7 @@ Example:
 
 
   starRating.rating= 2.5;
-  
+
   // Resizing of large star image by setting starSize property
   starRating.starSize = 20;
 
@@ -48,7 +49,7 @@ If you pass to the control a template UIImage (created using rendering mode (UII
 ### Compatiblity
 This control should work in ARC and not ARC projects. On OS X 10.6+ and iOS 4.x+.
 But it's only tested it with ARC enabled in 10.8+ and iOS 6.0+. Let me now if it works fine for you in other environments.
-  
+
 
 ### Screenshots
 

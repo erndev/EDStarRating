@@ -23,6 +23,7 @@
 @synthesize starImage = _starImage;
 @synthesize starHighlightedImage = _starHighlightedImage;
 @synthesize rating=_rating;
+@synthesize minRating;
 @synthesize maxRating;
 @synthesize backgroundImage;
 @synthesize editable;
@@ -44,9 +45,10 @@
 
 -(void)setDefaultProperties
 {
-    maxRating=5.0;
-    _rating=0.0;
-    horizontalMargin=10.0;
+    minRating = 1.0;
+    maxRating = 5.0;
+    _rating = 0.0;
+    horizontalMargin = 10.0;
     displayMode = EDStarRatingDisplayFull;
     halfStarThreshold=ED_DEFAULT_HALFSTAR_THRESHOLD;
     [self setBackgroundColor:[EDColor clearColor]];
@@ -105,7 +107,11 @@
 
 -(void)setRating:(float)ratingParam
 {
-    _rating = ratingParam;
+    if(ratingParam < minRating){
+        _rating = minRating;
+    }else{
+        _rating = ratingParam;
+    }
     [self setNeedsDisplay];
 }
 
