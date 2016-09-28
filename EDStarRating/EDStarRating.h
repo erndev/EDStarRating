@@ -54,12 +54,16 @@ typedef UIImage     EDImage;
 @property (nonatomic,strong) EDImage *backgroundImage;
 @property (nonatomic,strong) EDImage *starHighlightedImage;
 @property (nonatomic,strong) EDImage *starImage;
+@property (nonatomic) NSInteger minRating;
 @property (nonatomic) NSInteger maxRating;
 @property (nonatomic) float rating;
 @property (nonatomic) CGFloat horizontalMargin;
 @property (nonatomic) BOOL editable;
 @property (nonatomic) EDStarRatingDisplayMode displayMode;
 @property (nonatomic) float halfStarThreshold;
+#if EDSTAR_IOS
+@property (nonatomic) NSInteger starSize;
+#endif
 
 @property (nonatomic,weak) id<EDStarRatingProtocol> delegate;
 @property (nonatomic,copy) EDStarRatingReturnBlock returnBlock;

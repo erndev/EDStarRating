@@ -6,7 +6,9 @@
 //  Distributed under MIT license
 
 #import "EDStarRating.h"
-
+#if EDSTAR_IOS
+#import <QuartzCore/QuartzCore.h>
+#endif
 #define ED_DEFAULT_HALFSTAR_THRESHOLD   0.6
 
 
@@ -18,9 +20,10 @@
 
 
 @implementation EDStarRating
-@synthesize starImage;
-@synthesize starHighlightedImage;
+@synthesize starImage = _starImage;
+@synthesize starHighlightedImage = _starHighlightedImage;
 @synthesize rating=_rating;
+@synthesize minRating;
 @synthesize maxRating;
 @synthesize backgroundImage;
 @synthesize editable;
@@ -28,6 +31,9 @@
 @synthesize horizontalMargin;
 @synthesize halfStarThreshold;
 @synthesize displayMode;
+#if EDSTAR_IOS
+@synthesize starSize=_starSize;
+#endif
 #if EDSTAR_MACOSX
 @synthesize backgroundColor=_backgroundColor;
 #endif
@@ -39,9 +45,10 @@
 
 -(void)setDefaultProperties
 {
-    maxRating=5.0;
-    _rating=0.0;
-    horizontalMargin=10.0;
+    minRating = 1.0;
+    maxRating = 5.0;
+    _rating = 0.0;
+    horizontalMargin = 10.0;
     displayMode = EDStarRatingDisplayFull;
     halfStarThreshold=ED_DEFAULT_HALFSTAR_THRESHOLD;
     [self setBackgroundColor:[EDColor clearColor]];
@@ -110,11 +117,23 @@
     [self setNeedsDisplay];
 }
 
+#if EDSTAR_IOS
+-(void)setStarSize:(NSInteger)starSize
+{
+    _starSize = starSize;
+    if(_starSize != 0 && self.starImage != nil && self.starHighlightedImage != nil){
+        self.starImage = [self resizeImageToSize:CGSizeMake(_starSize, _starSize) withImage:self.starImage];
+        self.starHighlightedImage = [self resizeImageToSize:CGSizeMake(_starSize, _starSize) withImage:self.starHighlightedImage];
+    }
+    [self setNeedsDisplay];
+}
+#endif
+
 #pragma mark -
 #pragma mark Drawing
 -(CGPoint)pointOfStarAtPosition:(NSInteger)position highlighted:(BOOL)hightlighted
 {
-    CGSize size = hightlighted?starHighlightedImage.size:starImage.size;
+    CGSize size = hightlighted?_starHighlightedImage.size:_starImage.size;
     
     NSInteger starsSpace = self.bounds.size.width - 2*horizontalMargin;
     
@@ -220,7 +239,7 @@
     }
     
     // Draw rating Images
-    CGSize starSize = starHighlightedImage.size;
+    CGSize starSize = _starHighlightedImage.size;
     for( NSInteger i=0 ; i<maxRating; i++ )
     {
         [self drawImage:self.tintedStarImage atPosition:i];
@@ -284,6 +303,11 @@
             stars+=increment;
         }
     }
+    
+    if(stars < minRating){
+        stars = minRating;
+    }
+    
     return stars;
 }
 
@@ -296,7 +320,6 @@
     if ([theEvent type] == NSLeftMouseDown) {
         
         NSPoint pointInView   = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-        
         self.rating = [self starsForPoint:pointInView];
         [self setNeedsDisplay];
     }
@@ -310,7 +333,7 @@
 
     UITouch *touch = [touches anyObject];
     CGPoint touchLocation = [touch locationInView:self];
-    self.rating =[self starsForPoint:touchLocation];
+    self.rating = [self starsForPoint:touchLocation];
     [self setNeedsDisplay];
 }
 #endif
@@ -360,22 +383,29 @@
 #pragma mark - Tint color Support
 -(void)setStarImage:(EDImage *)image
 {
-    if( starImage == image)
+    if( _starImage == image)
         return;
     
-    starImage = image;
+    _starImage = image;
+    if(_starSize != 0){
+        _starImage = [self resizeImageToSize:CGSizeMake(_starSize, _starSize) withImage:_starImage];
+    }
     self.tintedStarImage = [self tintedImage:image];
 }
 
 -(void)setStarHighlightedImage:(EDImage *)image
 {
-    if( starHighlightedImage == image )
+    if( _starHighlightedImage == image )
         return;
     
-    starHighlightedImage = image;
+    _starHighlightedImage = image;
+    if(_starSize != 0){
+        _starHighlightedImage = [self resizeImageToSize:CGSizeMake(_starSize, _starSize) withImage:_starHighlightedImage];
+    }
     self.tintedStarHighlightedImage = [self tintedImage:image];
 
 }
+
 -(EDImage*)tintedImage:(EDImage*)img
 {
     EDImage *tintedImage = img;
@@ -409,6 +439,69 @@
     self.tintedStarImage = [self tintedImage:self.starImage];
     self.tintedStarHighlightedImage = [self tintedImage:self.starHighlightedImage];
     [self setNeedsDisplay];
+}
+#endif
+
+#pragma mark -
+#pragma mark Helper methods
+
+#if EDSTAR_IOS
+- (UIImage *)resizeImageToSize:(CGSize)targetSize withImage:(UIImage*)image
+{
+    UIImage *sourceImage = image;
+    UIImage *newImage = nil;
+    
+    CGSize imageSize = sourceImage.size;
+    CGFloat width = imageSize.width;
+    CGFloat height = imageSize.height;
+    
+    CGFloat targetWidth = targetSize.width;
+    CGFloat targetHeight = targetSize.height;
+    
+    CGFloat scaleFactor = 0.0;
+    CGFloat scaledWidth = targetWidth;
+    CGFloat scaledHeight = targetHeight;
+    
+    CGPoint thumbnailPoint = CGPointMake(0.0,0.0);
+    
+    if (CGSizeEqualToSize(imageSize, targetSize) == NO) {
+        
+        CGFloat widthFactor = targetWidth / width;
+        CGFloat heightFactor = targetHeight / height;
+        
+        if (widthFactor < heightFactor)
+            scaleFactor = widthFactor;
+        else
+            scaleFactor = heightFactor;
+        
+        scaledWidth  = width * scaleFactor;
+        scaledHeight = height * scaleFactor;
+        
+        // make image center aligned
+        if (widthFactor < heightFactor)
+        {
+            thumbnailPoint.y = (targetHeight - scaledHeight) * 0.5;
+        }
+        else if (widthFactor > heightFactor)
+        {
+            thumbnailPoint.x = (targetWidth - scaledWidth) * 0.5;
+        }
+    }
+    
+    UIGraphicsBeginImageContext(targetSize);
+    CGRect thumbnailRect = CGRectZero;
+    thumbnailRect.origin = thumbnailPoint;
+    thumbnailRect.size.width  = scaledWidth;
+    thumbnailRect.size.height = scaledHeight;
+    
+    [sourceImage drawInRect:thumbnailRect];
+    newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    if(newImage == nil)
+        NSLog(@"Could not scale image");
+    
+    return newImage ;
 }
 #endif
 
