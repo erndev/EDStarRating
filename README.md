@@ -6,7 +6,7 @@ A configurable star rating control for OSX and iOS, similar to those found in iT
 [![Badge w/ Version](https://cocoapod-badges.herokuapp.com/v/EDStarRating/badge.png)](https://cocoadocs.org/docsets/EDStarRating)
 [![Badge w/ Platform](https://cocoapod-badges.herokuapp.com/p/EDStarRating/badge.svg)](https://cocoadocs.org/docsets/EDStarRating)
 
-###Installation
+### Installation
 
 The easiest way to install EDStarRating is via [CocoaPods](http://cocoapods.org). Add this line to your Podfile:
 
